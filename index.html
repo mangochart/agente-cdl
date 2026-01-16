@@ -1,32 +1,222 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Teste Agente CDL</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Agente CDL | Recuperação Inteligente de Crédito</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
-    body {
+    :root {
+      --bg: #0b1220;
+      --bg-card: #111827;
+      --primary: #38bdf8;
+      --secondary: #22c55e;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
-      background: #0f172a;
-      color: #e5e7eb;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      flex-direction: column;
+      padding: 0;
     }
-    h1 {
-      color: #38bdf8;
-      font-size: 48px;
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617, #0b1220);
+      color: var(--text);
+      line-height: 1.6;
     }
-    p {
-      opacity: 0.8;
+
+    header {
+      padding: 80px 20px;
+      text-align: center;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    header h1 {
+      font-size: 42px;
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+
+    header p {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 720px;
+      margin: auto;
+    }
+
+    .cta {
+      margin-top: 40px;
+    }
+
+    .cta a {
+      background: var(--primary);
+      color: #020617;
+      padding: 16px 32px;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 8px;
+      display: inline-block;
+    }
+
+    section {
+      max-width: 1100px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+    }
+
+    .card h3 {
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .highlight {
+      background: linear-gradient(145deg, #0b1220, #020617);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .highlight h2 {
+      color: var(--secondary);
+      margin-bottom: 20px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 32px;
+      }
     }
   </style>
 </head>
+
 <body>
-  <h1>Agente CDL</h1>
-  <p>Se você está vendo isso, o GitHub Pages está funcionando.</p>
+
+  <!-- HERO -->
+  <header>
+    <h1>Agente CDL</h1>
+    <p>
+      Um agente de inteligência artificial que negocia dívidas automaticamente,
+      recupera crédito para lojistas e gera receita recorrente para a CDL,
+      sem custo inicial.
+    </p>
+
+    <div class="cta">
+      <a href="https://wa.me/5548984829654?text=Olá,%20sou%20da%20CDL%20____%20e%20tenho%20interesse%20no%20Agente%20de%20Cobrança" target="_blank">
+        Falar com especialista
+      </a>
+    </div>
+  </header>
+
+  <!-- COMO FUNCIONA -->
+  <section>
+    <div class="grid">
+      <div class="card">
+        <h3>1. O lojista envia a planilha</h3>
+        <p>
+          O lojista sobe uma planilha com seus devedores.
+          Nenhuma integração complexa é necessária.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>2. O agente negocia</h3>
+        <p>
+          O Agente CDL entra em contato via WhatsApp,
+          conduz a negociação e registra todas as interações.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>3. Recuperação automática</h3>
+        <p>
+          Valores recuperados são registrados em tempo real
+          em painéis para a CDL e para o lojista.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFÍCIOS -->
+  <section>
+    <div class="grid">
+      <div class="card">
+        <h3>Benefícios para a CDL</h3>
+        <p>
+          • Novo produto para associados<br>
+          • Receita recorrente (5% do recuperado)<br>
+          • Fortalecimento institucional<br>
+          • Inovação com IA aplicada
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Benefícios para o Lojista</h3>
+        <p>
+          • Recuperação de crédito sem esforço<br>
+          • Sem custo fixo<br>
+          • Transparência total<br>
+          • Atendimento automatizado
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Modelo Financeiro</h3>
+        <p>
+          Comissão total: <strong>10%</strong><br><br>
+          • 5% para a CDL<br>
+          • 5% para a empresa de tecnologia<br><br>
+          O lojista só paga se recuperar.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESTAQUE -->
+  <section>
+    <div class="highlight">
+      <h2>Produto exclusivo para CDLs</h2>
+      <p>
+        Uma solução moderna, escalável e alinhada
+        à realidade dos lojistas locais.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    Agente CDL • Inteligência Artificial aplicada à recuperação de crédito
+  </footer>
+
 </body>
 </html>
