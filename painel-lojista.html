@@ -1,276 +1,954 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Painel do Lojista | Agente CDL</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-:root {
-  --bg: #020617;
-  --card: #0b1220;
-  --border: #1f2937;
-  --primary: #38bdf8;
-  --secondary: #22c55e;
-  --danger: #ef4444;
-  --alert: #facc15;
-  --text: #e5e7eb;
-  --muted: #9ca3af;
-}
+  <meta charset="UTF-8">
+  <title>Painel do Lojista | Agente CDL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-secondary: #0a0f1e;
+      --card: #0f172a;
+      --border: #1e293b;
+      --primary: #38bdf8;
+      --primary-dark: #0284c7;
+      --secondary: #22c55e;
+      --danger: #ef4444;
+      --alert: #facc15;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --gradient-1: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      --gradient-2: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      --gradient-alert: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+    }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: Inter, Arial, sans-serif;
-  background: radial-gradient(circle at top, #020617, #000);
-  color: var(--text);
-}
-header {
-  padding: 24px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(2,6,23,.9);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-header h1 { color: var(--primary); font-size: 24px; }
-header p { color: var(--muted); font-size: 14px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
 
-main { max-width: 1200px; margin: auto; padding: 40px 20px; }
+    /* HEADER */
+    header {
+      padding: 32px 40px;
+      border-bottom: 1px solid var(--border);
+      background: var(--card);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+    }
+    
+    .header-content {
+      max-width: 1400px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    
+    .header-info h1 {
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 32px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    
+    .header-info p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+    
+    .header-info .store-name {
+      font-weight: 600;
+      color: var(--text);
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .back-btn {
+      padding: 10px 20px;
+      background: rgba(148,163,184,0.1);
+      border: 1px solid rgba(148,163,184,0.3);
+      color: var(--muted);
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 14px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .back-btn:hover {
+      background: rgba(148,163,184,0.2);
+      border-color: var(--muted);
+      color: var(--text);
+    }
+    
+    .upload-btn {
+      padding: 12px 24px;
+      background: var(--gradient-2);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .upload-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(34,197,94,0.3);
+    }
 
-/* KPIs */
-.kpis {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-  margin-bottom: 40px;
-}
-.kpi {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 26px;
-  position: relative;
-  transition: transform 0.3s;
-}
-.kpi:hover { transform: translateY(-5px); }
-.kpi span {
-  font-size: 32px;
-  font-weight: bold;
-  color: var(--secondary);
-}
-.kpi p {
-  color: var(--muted);
-  font-size: 14px;
-  margin-top: 6px;
-}
-.kpi .change {
-  position: absolute;
-  top: 18px;
-  right: 20px;
-  font-size: 12px;
-  font-weight: bold;
-}
-.up { color: var(--secondary); }
-.down { color: var(--danger); }
+    main {
+      max-width: 1400px;
+      margin: auto;
+      padding: 40px 40px 80px;
+    }
 
-/* Gráficos */
-.charts {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 24px;
-  margin-bottom: 40px;
-}
-.chart-box {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 24px;
-}
-.chart-box h3 { color: var(--primary); margin-bottom: 20px; }
-.bars { display: flex; align-items: flex-end; gap: 14px; height: 180px; }
-.bar {
-  flex: 1;
-  border-radius: 8px 8px 0 0;
-  position: relative;
-  transition: height 0.5s;
-}
-.bar span {
-  position: absolute;
-  bottom: -22px;
-  font-size: 12px;
-  color: var(--muted);
-  width: 100%;
-  text-align: center;
-}
+    /* HERO STATS */
+    .hero-stats {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-stats::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-2);
+    }
+    
+    .hero-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    
+    .hero-main {
+      flex: 1;
+      min-width: 300px;
+    }
+    
+    .hero-label {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    
+    .hero-value {
+      font-size: 64px;
+      font-weight: 900;
+      background: var(--gradient-2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    
+    .hero-change {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .hero-mini-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 24px;
+      flex: 1;
+    }
+    
+    .mini-stat {
+      text-align: center;
+      padding: 20px;
+      background: var(--bg);
+      border-radius: 16px;
+    }
+    
+    .mini-stat-value {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    
+    .mini-stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
 
-/* Status / Alertas */
-.status {
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: bold;
-  display: inline-block;
-}
-.ativo { background: rgba(34,197,94,.15); color: var(--secondary); }
-.pausado { background: rgba(239,68,68,.15); color: var(--danger); }
-.alerta { background: rgba(250,204,21,.15); color: var(--alert); }
+    /* KPIs GRID */
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+    
+    .kpi {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .kpi::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-1);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    
+    .kpi.success::before { background: var(--gradient-2); }
+    .kpi.alert::before { background: var(--gradient-alert); }
+    
+    .kpi:hover {
+      transform: translateY(-4px);
+      border-color: rgba(56,189,248,0.4);
+      box-shadow: 0 12px 40px rgba(56,189,248,0.12);
+    }
+    
+    .kpi:hover::before {
+      transform: scaleX(1);
+    }
+    
+    .kpi-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    
+    .kpi-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(56,189,248,0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    
+    .kpi.success .kpi-icon { background: rgba(34,197,94,0.1); }
+    .kpi.alert .kpi-icon { background: rgba(250,204,21,0.1); }
+    
+    .kpi-change {
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .kpi-change.up {
+      background: rgba(34,197,94,0.15);
+      color: var(--secondary);
+    }
+    
+    .kpi-change.down {
+      background: rgba(239,68,68,0.15);
+      color: var(--danger);
+    }
+    
+    .kpi-value {
+      font-size: 36px;
+      font-weight: 900;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    
+    .kpi.success .kpi-value {
+      background: var(--gradient-2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .kpi.alert .kpi-value {
+      background: var(--gradient-alert);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .kpi-label {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+    }
 
-/* Botões */
-.btn { background: var(--primary); color: #000; padding: 8px 16px; border-radius: 12px; font-weight: bold; cursor: pointer; text-decoration: none; transition: 0.3s; }
-.btn:hover { background: #0ea5e9; }
+    /* CHARTS */
+    .charts-section {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+    
+    .chart-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      transition: all 0.3s;
+    }
+    
+    .chart-card:hover {
+      border-color: rgba(56,189,248,0.3);
+    }
+    
+    .chart-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
 
-/* Tabela de clientes */
-.section-title { color: var(--primary); margin-bottom: 20px; font-size: 22px; }
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  overflow: hidden;
-}
-th, td { padding: 16px; border-bottom: 1px solid var(--border); text-align: left; font-size: 14px; }
-th { color: var(--muted); font-weight: normal; background: #020617; }
-tr:hover { background: rgba(255,255,255,0.02); }
+    /* BAR CHART */
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 20px;
+      height: 220px;
+      padding-top: 20px;
+    }
+    
+    .bar-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .bar {
+      width: 100%;
+      border-radius: 12px 12px 0 0;
+      position: relative;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .bar:hover {
+      filter: brightness(1.2);
+      transform: scaleY(1.05);
+    }
+    
+    .bar-value {
+      position: absolute;
+      top: -28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    
+    .bar-label {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
 
-/* Upload */
-.upload-section {
-  margin-top: 50px;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-}
-.upload-section input[type="file"] { margin-bottom: 20px; }
-.upload-section button { margin-top: 10px; }
+    /* STATUS STATS */
+    .status-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+      background: var(--bg);
+      border-radius: 16px;
+      transition: all 0.3s;
+    }
+    
+    .status-item:hover {
+      background: rgba(56,189,248,0.05);
+      transform: translateX(4px);
+    }
+    
+    .status-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+    
+    .status-icon.success { background: rgba(34,197,94,0.15); }
+    .status-icon.info { background: rgba(56,189,248,0.15); }
+    .status-icon.danger { background: rgba(239,68,68,0.15); }
+    
+    .status-content {
+      flex: 1;
+    }
+    
+    .status-percent {
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    
+    .status-percent.success { color: var(--secondary); }
+    .status-percent.info { color: var(--primary); }
+    .status-percent.danger { color: var(--danger); }
+    
+    .status-label {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 500;
+    }
 
-/* Footer */
-footer {
-  margin-top: 60px;
-  padding: 30px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 13px;
-  border-top: 1px solid var(--border);
-}
+    /* UPLOAD SECTION */
+    .upload-section {
+      background: var(--card);
+      border: 2px dashed var(--border);
+      border-radius: 24px;
+      padding: 48px;
+      text-align: center;
+      margin-bottom: 48px;
+      transition: all 0.3s;
+    }
+    
+    .upload-section:hover {
+      border-color: rgba(56,189,248,0.5);
+      background: rgba(56,189,248,0.02);
+    }
+    
+    .upload-icon {
+      font-size: 64px;
+      margin-bottom: 24px;
+      opacity: 0.8;
+    }
+    
+    .upload-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    
+    .upload-description {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 32px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .upload-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .file-input-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+    }
+    
+    .file-input-wrapper input[type=file] {
+      position: absolute;
+      left: -9999px;
+    }
+    
+    .file-input-label {
+      padding: 14px 28px;
+      background: rgba(56,189,248,0.1);
+      border: 1px solid rgba(56,189,248,0.3);
+      color: var(--primary);
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .file-input-label:hover {
+      background: rgba(56,189,248,0.2);
+      border-color: var(--primary);
+    }
+    
+    .file-name {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 16px;
+      font-weight: 500;
+    }
+    
+    .upload-status {
+      margin-top: 20px;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 14px;
+      display: none;
+    }
+    
+    .upload-status.success {
+      background: rgba(34,197,94,0.15);
+      color: var(--secondary);
+      display: block;
+    }
+    
+    .upload-status.error {
+      background: rgba(239,68,68,0.15);
+      color: var(--danger);
+      display: block;
+    }
 
-@media (max-width: 900px) { .charts { grid-template-columns: 1fr; } }
-</style>
+    /* TABLE */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    
+    .section-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    
+    .filter-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .filter-btn {
+      padding: 8px 16px;
+      background: rgba(148,163,184,0.1);
+      border: 1px solid rgba(148,163,184,0.2);
+      color: var(--muted);
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .filter-btn.active {
+      background: var(--gradient-1);
+      border-color: var(--primary);
+      color: var(--bg);
+    }
+    
+    .filter-btn:hover {
+      background: rgba(148,163,184,0.2);
+    }
+
+    .table-container {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 48px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    thead {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    
+    th {
+      padding: 20px 24px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    td {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    
+    tbody tr {
+      transition: all 0.2s;
+    }
+    
+    tbody tr:hover {
+      background: rgba(56,189,248,0.05);
+    }
+    
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .client-name {
+      font-weight: 600;
+      color: var(--text);
+    }
+    
+    .client-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    
+    .status-badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      display: inline-block;
+    }
+    
+    .status-badge.active {
+      background: rgba(34,197,94,0.15);
+      color: var(--secondary);
+    }
+    
+    .status-badge.paused {
+      background: rgba(239,68,68,0.15);
+      color: var(--danger);
+    }
+    
+    .status-badge.stopped {
+      background: rgba(250,204,21,0.15);
+      color: var(--alert);
+    }
+    
+    .btn {
+      background: rgba(56,189,248,0.1);
+      border: 1px solid rgba(56,189,248,0.3);
+      color: var(--primary);
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .btn:hover {
+      background: rgba(56,189,248,0.2);
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    footer {
+      margin-top: 60px;
+      padding: 32px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1200px) {
+      .charts-section {
+        grid-template-columns: 1fr;
+      }
+      
+      .hero-mini-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      header {
+        padding: 24px 20px;
+      }
+      
+      main {
+        padding: 32px 20px;
+      }
+      
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .hero-stats {
+        padding: 24px;
+      }
+      
+      .hero-value {
+        font-size: 48px;
+      }
+      
+      .kpis {
+        grid-template-columns: 1fr;
+      }
+      
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+      
+      .filter-buttons {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      table {
+        font-size: 12px;
+      }
+      
+      th, td {
+        padding: 12px 16px;
+      }
+      
+      .upload-section {
+        padding: 32px 24px;
+      }
+    }
+
+  </style>
 </head>
 <body>
 
 <header>
-  <h1>Painel do Lojista</h1>
-  <p>Visão estratégica das negociações do seu negócio</p>
+  <div class="header-content">
+    <div class="header-info">
+      <h1>Painel do Lojista</h1>
+      <p>Recupere crédito de forma automática • <span class="store-name">Eletro Max</span></p>
+    </div>
+    <div class="header-actions">
+      <a href="index.html" class="back-btn">← Voltar ao início</a>
+      <button class="upload-btn" onclick="document.getElementById('scrollToUpload').scrollIntoView({behavior: 'smooth'})">
+        📤 Enviar planilha
+      </button>
+    </div>
+  </div>
 </header>
 
 <main>
 
-<!-- KPIs -->
-<div class="kpis">
-  <div class="kpi">
-    <span>R$ 98.900</span>
-    <p>Total recuperado</p>
-    <div class="change up">+15% vs mês anterior</div>
-  </div>
-  <div class="kpi">
-    <span>44</span>
-    <p>Negociações em andamento</p>
-    <div class="change up">+8%</div>
-  </div>
-  <div class="kpi">
-    <span>29</span>
-    <p>Negociações fechadas</p>
-    <div class="change up">+10%</div>
-  </div>
-  <div class="kpi">
-    <span>65%</span>
-    <p>Taxa de sucesso</p>
-    <div class="change down">-3%</div>
-  </div>
-</div>
-
-<!-- Gráficos -->
-<div class="charts">
-  <div class="chart-box">
-    <h3>Recuperação por mês (R$)</h3>
-    <div class="bars">
-      <div class="bar" style="height:50%; background: linear-gradient(180deg, #22c55e, #16a34a)"><span>Jul</span></div>
-      <div class="bar" style="height:60%; background: linear-gradient(180deg, #22c55e, #16a34a)"><span>Ago</span></div>
-      <div class="bar" style="height:70%; background: linear-gradient(180deg, #22c55e, #16a34a)"><span>Set</span></div>
-      <div class="bar" style="height:85%; background: linear-gradient(180deg, #38bdf8, #0ea5e9)"><span>Out</span></div>
-      <div class="bar" style="height:100%; background: linear-gradient(180deg, #38bdf8, #0ea5e9)"><span>Nov</span></div>
+  <!-- HERO STATS -->
+  <div class="hero-stats">
+    <div class="hero-content">
+      <div class="hero-main">
+        <div class="hero-label">Total Recuperado</div>
+        <div class="hero-value">R$ 98.900</div>
+        <div class="hero-change">
+          ↑ +15% vs mês anterior
+        </div>
+      </div>
+      <div class="hero-mini-stats">
+        <div class="mini-stat">
+          <div class="mini-stat-value">44</div>
+          <div class="mini-stat-label">Em andamento</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-value">29</div>
+          <div class="mini-stat-label">Fechadas</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-value">65%</div>
+          <div class="mini-stat-label">Taxa sucesso</div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="chart-box">
-    <h3>Status das negociações</h3>
-    <p style="color:var(--secondary)">✔ 65% Acordos fechados</p>
-    <p style="color:var(--primary)">⏳ 25% Em negociação</p>
-    <p style="color:var(--danger)">✖ 10% Sem acordo</p>
+  <!-- KPIs -->
+  <div class="kpis">
+    <div class="kpi success">
+      <div class="kpi-header">
+        <div class="kpi-icon">💰</div>
+        <div class="kpi-change up">↑ +22%</div>
+      </div>
+      <div class="kpi-value">R$ 32.450</div>
+      <div class="kpi-label">Recuperado este mês</div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-header">
+        <div class="kpi-icon">📊</div>
+        <div class="kpi-change up">↑ +8%</div>
+      </div>
+      <div class="kpi-value">R$ 18.200</div>
+      <div class="kpi-label">Ticket médio recuperado</div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-header">
+        <div class="kpi-icon">⏱️</div>
+        <div class="kpi-change up">↓ -2 dias</div>
+      </div>
+      <div class="kpi-value">12 dias</div>
+      <div class="kpi-label">Tempo médio de acordo</div>
+    </div>
+
+    <div class="kpi alert">
+      <div class="kpi-header">
+        <div class="kpi-icon">🎯</div>
+        <div class="kpi-change down">↓ -3%</div>
+      </div>
+      <div class="kpi-value">65%</div>
+      <div class="kpi-label">Taxa de conversão</div>
+    </div>
   </div>
-</div>
 
-<!-- Upload de relatório -->
-<section class="upload-section">
-  <div style="background:var(--card); border:1px solid var(--border); border-radius:20px; padding:30px;">
-    <h2 style="color:var(--primary); margin-bottom:20px;">📁 Enviar relatório de devedores</h2>
-    <p style="color:var(--muted); margin-bottom:20px;">Envie o arquivo .xlsx ou .csv com os devedores para atualizar seu painel</p>
-    <input type="file" id="fileUpload" accept=".xlsx,.csv"/>
-    <br>
-    <button id="uploadBtn" class="btn">Enviar Relatório</button>
-    <p id="uploadStatus" style="margin-top:15px; color:var(--secondary); font-weight:bold;"></p>
+  <!-- CHARTS -->
+  <div class="charts-section">
+    <div class="chart-card">
+      <h3 class="chart-title">Evolução de Recuperação (R$)</h3>
+      <div class="bar-chart">
+        <div class="bar-wrapper">
+          <div class="bar" style="height: 50%; background: linear-gradient(180deg, #22c55e, #16a34a)">
+            <span class="bar-value">R$ 18k</span>
+          </div>
+          <span class="bar-label">Jul</span>
+        </div>
+        <div class="bar-wrapper">
+          <div class="bar" style="height: 60%; background: linear-gradient(180deg, #22c55e, #16a34a)">
+            <span class="bar-value">R$ 21k</span>
+          </div>
+          <span class="bar-label">Ago</span>
+        </div>
+        <div class="bar-wrapper">
+          <div class="bar" style="height: 70%; background: linear-gradient(180deg, #22c55e, #16a34a)">
+            <span class="bar-value">R$ 25k</span>
+          </div>
+          <span class="bar-label">Set</span>
+        </div>
+        <div class="bar-wrapper">
+          <div class="bar" style="height: 85%; background: linear-gradient(180deg, #38bdf8, #0284c7)">
+            <span class="bar-value">R$ 29k</span>
+          </div>
+          <span class="bar-label">Out</span>
+        </div>
+        <div class="bar-wrapper">
+          <div class="bar" style="height: 100%; background: linear-gradient(180deg, #38bdf8, #0284c7)">
+            <span class="bar-value">R$ 32k</span>
+          </div>
+          <span class="bar-label">Nov</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3 class="chart-title">Status das Negociações</h3>
+      <div class="status-stats">
+        <div class="status-item">
+          <div class="status-icon success">✓</div>
+          <div class="status-content">
+            <div class="status-percent success">65%</div>
+            <div class="status-label">Acordos fechados</div>
+          </div>
+        </div>
+        <div class="status-item">
+          <div class="status-icon info">⏳</div>
+          <div class="status-content">
+            <div class="status-percent info">25%</div>
+            <div class="status-label">Em negociação</div>
+          </div>
+        </div>
+        <div class="status-item">
+          <div class="status-icon danger">✗</div>
+          <div class="status-content">
+            <div class="status-percent danger">10%</div>
+            <div class="status-label">Sem acordo</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</section>
 
-<script>
-  const uploadBtn = document.getElementById('uploadBtn');
-  const fileUpload = document.getElementById('fileUpload');
-  const uploadStatus = document.getElementById('uploadStatus');
-
-  uploadBtn.addEventListener('click', () => {
-    if(fileUpload.files.length === 0){
-      uploadStatus.style.color = 'var(--danger)';
-      uploadStatus.textContent = '❌ Nenhum arquivo selecionado!';
-      return;
-    }
-    const file = fileUpload.files[0];
-    uploadStatus.style.color = 'var(--secondary)';
-    uploadStatus.textContent = `✔ Arquivo "${file.name}" enviado com sucesso!`;
-    fileUpload.value = "";
-  });
-</script>
-
-<!-- Clientes / ranking -->
-<h2 class="section-title">Clientes e negociações</h2>
-<table>
-<thead>
-<tr>
-  <th>Cliente</th>
-  <th>Negociação</th>
-  <th>Valor</th>
-  <th>Status</th>
-  <th>Ações</th>
-</tr>
-</thead>
-<tbody>
-<tr><td>Cliente A</td><td>3</td><td>R$ 12.400</td><td><span class="status ativo">ATIVO</span></td><td><a class="btn" href="#">Detalhes</a></td></tr>
-<tr><td>Cliente B</td><td>2</td><td>R$ 8.300</td><td><span class="status ativo">ATIVO</span></td><td><a class="btn" href="#">Detalhes</a></td></tr>
-<tr><td>Cliente C</td><td>1</td><td>R$ 5.700</td><td><span class="status alerta">PARADO</span></td><td><a class="btn" href="#">Detalhes</a></td></tr>
-<tr><td>Cliente D</td><td>4</td><td>R$ 18.500</td><td><span class="status ativo">ATIVO</span></td><td><a class="btn" href="#">Detalhes</a></td></tr>
-<tr><td>Cliente E</td><td>2</td><td>R$ 7.900</td><td><span class="status pausado">ATRASADO</span></td><td><a class="btn" href="#">Detalhes</a></td></tr>
-</tbody>
-</table>
-
-<!-- Botões -->
-<div style="margin-top:30px;">
-  <a class="btn" href="painel-cdl.html">⬅ Voltar ao Painel CDL</a>
-</div>
-
-</main>
-
-<footer>
-Agente CDL • Painel do lojista
-</footer>
-
-</body>
-</html>
+  <!-- UPLOAD SECTION -->
+  <div class="upload-section" id="scrollToUpload">
+    <div class="upload-icon">📁</div>
+    <h2 class="upload-title">Adicionar Novos Devedores</h2>
+    <p class="upload-description">
+      Envie sua planilha Excel (.xlsx) ou CSV com os dados dos devedores e deixe o Agente CDL trabalhar por você
+    </p>
+    <div class="upload-actions">
+      <div class="file-input-wrapper">
+        <input type="file" id="fileUpload" accept=".xlsx,.csv" onchange="updateFileName(this)">
+        <label for="fileUpload" class="file-input-label">
+          📎 Selecionar arquivo
+        </label>
+      </div>
+      <button class="upload-btn" onclick="uploadFile()">
