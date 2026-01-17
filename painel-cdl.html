@@ -7,142 +7,603 @@
   <style>
     :root {
       --bg: #020617;
-      --card: #0b1220;
-      --border: #1f2937;
+      --bg-secondary: #0a0f1e;
+      --card: #0f172a;
+      --border: #1e293b;
       --primary: #38bdf8;
+      --primary-dark: #0284c7;
       --secondary: #22c55e;
       --danger: #ef4444;
       --alert: #facc15;
-      --text: #e5e7eb;
-      --muted: #9ca3af;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --gradient-1: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      --gradient-2: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
-      font-family: Inter, Arial, sans-serif;
-      background: radial-gradient(circle at top, #020617, #000);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+      background: var(--bg);
       color: var(--text);
+      line-height: 1.6;
     }
+
+    /* HEADER */
     header {
-      padding: 24px;
+      padding: 32px 40px;
       border-bottom: 1px solid var(--border);
-      background: rgba(2,6,23,.9);
+      background: var(--card);
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 100;
+      backdrop-filter: blur(20px);
     }
-    header h1 { color: var(--primary); font-size: 24px; }
-    header p { color: var(--muted); font-size: 14px; }
-    main { max-width: 1300px; margin: auto; padding: 40px 20px; }
+    
+    .header-content {
+      max-width: 1400px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    
+    .header-info h1 {
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 32px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    
+    .header-info p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    
+    .period-selector {
+      display: flex;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4px;
+    }
+    
+    .period-btn {
+      padding: 8px 16px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    
+    .period-btn.active {
+      background: var(--gradient-1);
+      color: var(--bg);
+    }
+    
+    .export-btn {
+      padding: 10px 20px;
+      background: rgba(56,189,248,0.1);
+      border: 1px solid rgba(56,189,248,0.3);
+      color: var(--primary);
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 14px;
+    }
+    
+    .export-btn:hover {
+      background: rgba(56,189,248,0.2);
+      border-color: var(--primary);
+    }
+    
+    .back-btn {
+      padding: 10px 20px;
+      background: rgba(148,163,184,0.1);
+      border: 1px solid rgba(148,163,184,0.3);
+      color: var(--muted);
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 14px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .back-btn:hover {
+      background: rgba(148,163,184,0.2);
+      border-color: var(--muted);
+      color: var(--text);
+    }
 
-    /* KPIs */
+    main {
+      max-width: 1400px;
+      margin: auto;
+      padding: 40px 40px 80px;
+    }
+
+    /* KPIs GRID */
     .kpis {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      margin-bottom: 40px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
     }
+    
     .kpi {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 26px;
+      border-radius: 20px;
+      padding: 32px;
       position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
     }
-    .kpi span {
-      font-size: 32px;
-      font-weight: bold;
+    
+    .kpi::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-1);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    
+    .kpi:hover {
+      transform: translateY(-4px);
+      border-color: rgba(56,189,248,0.4);
+      box-shadow: 0 12px 40px rgba(56,189,248,0.12);
+    }
+    
+    .kpi:hover::before {
+      transform: scaleX(1);
+    }
+    
+    .kpi-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    
+    .kpi-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(56,189,248,0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    
+    .kpi-change {
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .kpi-change.up {
+      background: rgba(34,197,94,0.15);
       color: var(--secondary);
     }
-    .kpi p {
+    
+    .kpi-change.down {
+      background: rgba(239,68,68,0.15);
+      color: var(--danger);
+    }
+    
+    .kpi-value {
+      font-size: 40px;
+      font-weight: 900;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    
+    .kpi.success .kpi-value {
+      background: var(--gradient-2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .kpi-label {
       color: var(--muted);
       font-size: 14px;
-      margin-top: 6px;
+      font-weight: 500;
     }
-    .kpi .change {
-      position: absolute;
-      top: 18px;
-      right: 20px;
-      font-size: 12px;
-      font-weight: bold;
-    }
-    .up { color: var(--secondary); }
-    .down { color: var(--danger); }
 
-    /* GRAFICOS */
-    .charts {
+    /* CHARTS SECTION */
+    .charts-section {
       display: grid;
       grid-template-columns: 2fr 1fr;
       gap: 24px;
-      margin-bottom: 40px;
+      margin-bottom: 48px;
     }
-    .chart-box {
+    
+    .chart-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 24px;
+      padding: 32px;
+      transition: all 0.3s;
     }
-    .chart-box h3 { color: var(--primary); margin-bottom: 20px; }
-    .bars { display: flex; align-items: flex-end; gap: 14px; height: 180px; }
-    .bar {
-      flex: 1;
-      background: linear-gradient(180deg, var(--primary), #0ea5e9);
-      border-radius: 8px 8px 0 0;
-      position: relative;
+    
+    .chart-card:hover {
+      border-color: rgba(56,189,248,0.3);
     }
-    .bar span {
-      position: absolute;
-      bottom: -22px;
-      font-size: 12px;
+    
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    
+    .chart-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    
+    .chart-subtitle {
+      font-size: 13px;
       color: var(--muted);
-      width: 100%;
-      text-align: center;
+      margin-top: 4px;
     }
 
-    /* Ranking / LOJISTAS */
-    .section-title { color: var(--primary); margin-bottom: 20px; font-size: 22px; }
+    /* BAR CHART */
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 20px;
+      height: 240px;
+      padding-top: 20px;
+    }
+    
+    .bar-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .bar {
+      width: 100%;
+      background: var(--gradient-1);
+      border-radius: 12px 12px 0 0;
+      position: relative;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .bar:hover {
+      filter: brightness(1.2);
+      transform: scaleY(1.05);
+    }
+    
+    .bar-value {
+      position: absolute;
+      top: -28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    
+    .bar-label {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    /* DONUT STATS */
+    .donut-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+      background: var(--bg);
+      border-radius: 16px;
+      transition: all 0.3s;
+    }
+    
+    .stat-item:hover {
+      background: rgba(56,189,248,0.05);
+      transform: translateX(4px);
+    }
+    
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+    
+    .stat-icon.success { background: rgba(34,197,94,0.15); }
+    .stat-icon.info { background: rgba(56,189,248,0.15); }
+    .stat-icon.danger { background: rgba(239,68,68,0.15); }
+    
+    .stat-content {
+      flex: 1;
+    }
+    
+    .stat-percent {
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    
+    .stat-percent.success { color: var(--secondary); }
+    .stat-percent.info { color: var(--primary); }
+    .stat-percent.danger { color: var(--danger); }
+    
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* TABLE SECTION */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    
+    .section-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 16px;
+      min-width: 280px;
+    }
+    
+    .search-box input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+    }
+    
+    .search-box input::placeholder {
+      color: var(--muted);
+    }
+
+    .table-container {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    
     table {
       width: 100%;
       border-collapse: collapse;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      overflow: hidden;
     }
-    th, td { padding: 16px; border-bottom: 1px solid var(--border); text-align: left; font-size: 14px; }
-    th { color: var(--muted); font-weight: normal; background: #020617; }
-    tr:hover { background: rgba(255,255,255,0.02); }
-    .status {
-      padding: 6px 12px;
+    
+    thead {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    
+    th {
+      padding: 20px 24px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    td {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    
+    tbody tr {
+      transition: all 0.2s;
+    }
+    
+    tbody tr:hover {
+      background: rgba(56,189,248,0.05);
+    }
+    
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .merchant-name {
+      font-weight: 600;
+      color: var(--text);
+    }
+    
+    .merchant-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    
+    .status-badge {
+      padding: 6px 14px;
       border-radius: 20px;
       font-size: 12px;
-      font-weight: bold;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
       display: inline-block;
     }
-    .ativo { background: rgba(34,197,94,.15); color: var(--secondary); }
-    .pausado { background: rgba(239,68,68,.15); color: var(--danger); }
-    .alerta { background: rgba(250,204,21,.15); color: var(--alert); }
-
-    /* Botão */
-    .btn { background: var(--primary); color: #000; padding: 8px 16px; border-radius: 12px; font-weight: bold; cursor: pointer; text-decoration: none; transition: 0.3s; }
-    .btn:hover { background: #0ea5e9; }
+    
+    .status-badge.active {
+      background: rgba(34,197,94,0.15);
+      color: var(--secondary);
+    }
+    
+    .status-badge.paused {
+      background: rgba(239,68,68,0.15);
+      color: var(--danger);
+    }
+    
+    .status-badge.alert {
+      background: rgba(250,204,21,0.15);
+      color: var(--alert);
+    }
+    
+    .btn {
+      background: rgba(56,189,248,0.1);
+      border: 1px solid rgba(56,189,248,0.3);
+      color: var(--primary);
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .btn:hover {
+      background: rgba(56,189,248,0.2);
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
 
     footer {
       margin-top: 60px;
-      padding: 30px;
+      padding: 32px;
       text-align: center;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 14px;
       border-top: 1px solid var(--border);
     }
 
-    @media (max-width: 900px) { .charts { grid-template-columns: 1fr; } }
+    /* RESPONSIVE */
+    @media (max-width: 1200px) {
+      .charts-section {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      header {
+        padding: 24px 20px;
+      }
+      
+      main {
+        padding: 32px 20px;
+      }
+      
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .kpis {
+        grid-template-columns: 1fr;
+      }
+      
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+      
+      .search-box {
+        width: 100%;
+      }
+      
+      table {
+        font-size: 12px;
+      }
+      
+      th, td {
+        padding: 12px 16px;
+      }
+    }
+
   </style>
 </head>
 <body>
 
 <header>
-  <h1>Painel da CDL</h1>
-  <p>Visão estratégica da recuperação de crédito dos associados</p>
+  <div class="header-content">
+    <div class="header-info">
+      <h1>Painel Estratégico CDL</h1>
+      <p>Acompanhamento em tempo real da recuperação de crédito</p>
+    </div>
+    <div class="header-actions">
+      <a href="index.html" class="back-btn">← Voltar ao início</a>
+      <div class="period-selector">
+        <button class="period-btn">7d</button>
+        <button class="period-btn active">30d</button>
+        <button class="period-btn">90d</button>
+        <button class="period-btn">12m</button>
+      </div>
+      <button class="export-btn">📊 Exportar relatório</button>
+    </div>
+  </div>
 </header>
 
 <main>
@@ -150,78 +611,266 @@
   <!-- KPIs -->
   <div class="kpis">
     <div class="kpi">
-      <span>R$ 482.930</span>
-      <p>Total recuperado</p>
-      <div class="change up">+12% vs mês anterior</div>
+      <div class="kpi-header">
+        <div class="kpi-icon">💰</div>
+        <div class="kpi-change up">
+          ↑ +12%
+        </div>
+      </div>
+      <div class="kpi-value">R$ 482.930</div>
+      <div class="kpi-label">Total recuperado este mês</div>
     </div>
+
     <div class="kpi">
-      <span>10</span>
-      <p>Lojistas ativos</p>
-      <div class="change down">-1 vs mês anterior</div>
+      <div class="kpi-header">
+        <div class="kpi-icon">🏪</div>
+        <div class="kpi-change down">
+          ↓ -1
+        </div>
+      </div>
+      <div class="kpi-value">10</div>
+      <div class="kpi-label">Lojistas ativos na plataforma</div>
     </div>
+
     <div class="kpi">
-      <span>312</span>
-      <p>Negociações em andamento</p>
-      <div class="change up">+5%</div>
+      <div class="kpi-header">
+        <div class="kpi-icon">🤝</div>
+        <div class="kpi-change up">
+          ↑ +5%
+        </div>
+      </div>
+      <div class="kpi-value">312</div>
+      <div class="kpi-label">Negociações em andamento</div>
     </div>
-    <div class="kpi">
-      <span>29%</span>
-      <p>Taxa média de sucesso</p>
-      <div class="change up">+3%</div>
+
+    <div class="kpi success">
+      <div class="kpi-header">
+        <div class="kpi-icon">📈</div>
+        <div class="kpi-change up">
+          ↑ +3%
+        </div>
+      </div>
+      <div class="kpi-value">29%</div>
+      <div class="kpi-label">Taxa média de conversão</div>
     </div>
   </div>
 
-  <!-- GRAFICOS -->
-  <div class="charts">
-    <div class="chart-box">
-      <h3>Recuperação por mês (R$)</h3>
-      <div class="bars">
-        <div class="bar" style="height:40%"><span>Jul</span></div>
-        <div class="bar" style="height:55%"><span>Ago</span></div>
-        <div class="bar" style="height:70%"><span>Set</span></div>
-        <div class="bar" style="height:85%"><span>Out</span></div>
-        <div class="bar" style="height:100%"><span>Nov</span></div>
+  <!-- CHARTS -->
+  <div class="charts-section">
+    <div class="chart-card">
+      <div class="chart-header">
+        <div>
+          <h3 class="chart-title">Evolução de Recuperação</h3>
+          <p class="chart-subtitle">Valores recuperados nos últimos 5 meses</p>
+        </div>
+      </div>
+      <div class="bar-chart">
+        <div class="bar-wrapper">
+          <div class="bar" style="height: 40%">
+            <span class="bar-value">R$ 86k</span>
+          </div>
+          <span class="bar-label">Jul</span>
+        </div>
+        <div class="bar-wrapper">
+          <div class="bar" style="height: 55%">
+            <span class="bar-value">R$ 118k</span>
+          </div>
+          <span class="bar-label">Ago</span>
+        </div>
+        <div class="bar-wrapper">
+          <div class="bar" style="height: 70%">
+            <span class="bar-value">R$ 151k</span>
+          </div>
+          <span class="bar-label">Set</span>
+        </div>
+        <div class="bar-wrapper">
+          <div class="bar" style="height: 85%">
+            <span class="bar-value">R$ 183k</span>
+          </div>
+          <span class="bar-label">Out</span>
+        </div>
+        <div class="bar-wrapper">
+          <div class="bar" style="height: 100%">
+            <span class="bar-value">R$ 215k</span>
+          </div>
+          <span class="bar-label">Nov</span>
+        </div>
       </div>
     </div>
 
-    <div class="chart-box">
-      <h3>Status das negociações</h3>
-      <p style="color:var(--secondary)">✔ 58% Acordos fechados</p>
-      <p style="color:var(--primary)">⏳ 31% Em negociação</p>
-      <p style="color:var(--danger)">✖ 11% Sem acordo</p>
+    <div class="chart-card">
+      <div class="chart-header">
+        <div>
+          <h3 class="chart-title">Status Global</h3>
+          <p class="chart-subtitle">Distribuição de negociações</p>
+        </div>
+      </div>
+      <div class="donut-stats">
+        <div class="stat-item">
+          <div class="stat-icon success">✓</div>
+          <div class="stat-content">
+            <div class="stat-percent success">58%</div>
+            <div class="stat-label">Acordos fechados</div>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon info">⏳</div>
+          <div class="stat-content">
+            <div class="stat-percent info">31%</div>
+            <div class="stat-label">Em negociação ativa</div>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon danger">✗</div>
+          <div class="stat-content">
+            <div class="stat-percent danger">11%</div>
+            <div class="stat-label">Sem acordo</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Ranking -->
-  <h2 class="section-title">Lojistas participantes</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Lojista</th>
-        <th>Negociações</th>
-        <th>Total recuperado</th>
-        <th>Status</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>Loja Central</td><td>48</td><td>R$ 62.400</td><td><span class="status ativo">ATIVO</span></td><td><a class="btn" href="#">Ver painel do lojista</a></td></tr>
-      <tr><td>Moda Sul</td><td>31</td><td>R$ 41.200</td><td><span class="status ativo">ATIVO</span></td><td><a class="btn" href="#">Ver painel do lojista</a></td></tr>
-      <tr><td>Eletro Max</td><td>67</td><td>R$ 98.900</td><td><span class="status ativo">ATIVO</span></td><td><a class="btn" href="#">Ver painel do lojista</a></td></tr>
-      <tr><td>Casa & Conforto</td><td>22</td><td>R$ 27.300</td><td><span class="status ativo">ATIVO</span></td><td><a class="btn" href="#">Ver painel do lojista</a></td></tr>
-      <tr><td>Farmácia Vida</td><td>19</td><td>R$ 18.700</td><td><span class="status ativo">ATIVO</span></td><td><a class="btn" href="#">Ver painel do lojista</a></td></tr>
-      <tr><td>Auto Peças Sul</td><td>44</td><td>R$ 55.600</td><td><span class="status ativo">ATIVO</span></td><td><a class="btn" href="#">Ver painel do lojista</a></td></tr>
-      <tr><td>Tech Store</td><td>38</td><td>R$ 46.800</td><td><span class="status ativo">ATIVO</span></td><td><a class="btn" href="#">Ver painel do lojista</a></td></tr>
-      <tr><td>Super Popular</td><td>27</td><td>R$ 32.100</td><td><span class="status ativo">ATIVO</span></td><td><a class="btn" href="#">Ver painel do lojista</a></td></tr>
-      <tr><td>Ótica Foco</td><td>9</td><td>R$ 8.400</td><td><span class="status pausado">PAUSADO</span></td><td><a class="btn" href="#">Ver painel do lojista</a></td></tr>
-      <tr><td>Constrular</td><td>7</td><td>R$ 5.530</td><td><span class="status alerta">EM ALERTA</span></td><td><a class="btn" href="#">Ver painel do lojista</a></td></tr>
-    </tbody>
-  </table>
+  <!-- TABLE -->
+  <div class="section-header">
+    <h2 class="section-title">Lojistas Participantes</h2>
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" placeholder="Buscar lojista...">
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Lojista</th>
+          <th>Negociações</th>
+          <th>Total Recuperado</th>
+          <th>Taxa Sucesso</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="merchant-name">Eletro Max</div>
+            <div class="merchant-meta">Desde Mar/2024</div>
+          </td>
+          <td>67</td>
+          <td><strong>R$ 98.900</strong></td>
+          <td>34%</td>
+          <td><span class="status-badge active">Ativo</span></td>
+          <td><a class="btn" href="painel-lojista.html">Ver detalhes →</a></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="merchant-name">Loja Central</div>
+            <div class="merchant-meta">Desde Jan/2024</div>
+          </td>
+          <td>48</td>
+          <td><strong>R$ 62.400</strong></td>
+          <td>29%</td>
+          <td><span class="status-badge active">Ativo</span></td>
+          <td><a class="btn" href="painel-lojista.html">Ver detalhes →</a></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="merchant-name">Auto Peças Sul</div>
+            <div class="merchant-meta">Desde Fev/2024</div>
+          </td>
+          <td>44</td>
+          <td><strong>R$ 55.600</strong></td>
+          <td>31%</td>
+          <td><span class="status-badge active">Ativo</span></td>
+          <td><a class="btn" href="painel-lojista.html">Ver detalhes →</a></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="merchant-name">Tech Store</div>
+            <div class="merchant-meta">Desde Abr/2024</div>
+          </td>
+          <td>38</td>
+          <td><strong>R$ 46.800</strong></td>
+          <td>27%</td>
+          <td><span class="status-badge active">Ativo</span></td>
+          <td><a class="btn" href="painel-lojista.html">Ver detalhes →</a></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="merchant-name">Moda Sul</div>
+            <div class="merchant-meta">Desde Jan/2024</div>
+          </td>
+          <td>31</td>
+          <td><strong>R$ 41.200</strong></td>
+          <td>25%</td>
+          <td><span class="status-badge active">Ativo</span></td>
+          <td><a class="btn" href="painel-lojista.html">Ver detalhes →</a></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="merchant-name">Super Popular</div>
+            <div class="merchant-meta">Desde Mai/2024</div>
+          </td>
+          <td>27</td>
+          <td><strong>R$ 32.100</strong></td>
+          <td>28%</td>
+          <td><span class="status-badge active">Ativo</span></td>
+          <td><a class="btn" href="painel-lojista.html">Ver detalhes →</a></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="merchant-name">Casa & Conforto</div>
+            <div class="merchant-meta">Desde Mar/2024</div>
+          </td>
+          <td>22</td>
+          <td><strong>R$ 27.300</strong></td>
+          <td>26%</td>
+          <td><span class="status-badge active">Ativo</span></td>
+          <td><a class="btn" href="painel-lojista.html">Ver detalhes →</a></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="merchant-name">Farmácia Vida</div>
+            <div class="merchant-meta">Desde Jun/2024</div>
+          </td>
+          <td>19</td>
+          <td><strong>R$ 18.700</strong></td>
+          <td>23%</td>
+          <td><span class="status-badge active">Ativo</span></td>
+          <td><a class="btn" href="painel-lojista.html">Ver detalhes →</a></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="merchant-name">Ótica Foco</div>
+            <div class="merchant-meta">Desde Fev/2024</div>
+          </td>
+          <td>9</td>
+          <td><strong>R$ 8.400</strong></td>
+          <td>18%</td>
+          <td><span class="status-badge paused">Pausado</span></td>
+          <td><a class="btn" href="painel-lojista.html">Ver detalhes →</a></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="merchant-name">Constrular</div>
+            <div class="merchant-meta">Desde Jul/2024</div>
+          </td>
+          <td>7</td>
+          <td><strong>R$ 5.530</strong></td>
+          <td>15%</td>
+          <td><span class="status-badge alert">Em Alerta</span></td>
+          <td><a class="btn" href="painel-lojista.html">Ver detalhes →</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
 </main>
 
 <footer>
-  Agente CDL • Painel estratégico da entidade
+  <p>Agente CDL • Painel Estratégico da Entidade • Dados atualizados em tempo real</p>
 </footer>
 
 </body>
