@@ -132,6 +132,18 @@ th, td { padding: 16px; border-bottom: 1px solid var(--border); text-align: left
 th { color: var(--muted); font-weight: normal; background: #020617; }
 tr:hover { background: rgba(255,255,255,0.02); }
 
+/* Upload */
+.upload-section {
+  margin-top: 50px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.upload-section input[type="file"] { margin-bottom: 20px; }
+.upload-section button { margin-top: 10px; }
+
+/* Footer */
 footer {
   margin-top: 60px;
   padding: 30px;
@@ -142,7 +154,6 @@ footer {
 }
 
 @media (max-width: 900px) { .charts { grid-template-columns: 1fr; } }
-
 </style>
 </head>
 <body>
@@ -198,6 +209,36 @@ footer {
     <p style="color:var(--danger)">✖ 10% Sem acordo</p>
   </div>
 </div>
+
+<!-- Upload de relatório -->
+<section class="upload-section">
+  <div style="background:var(--card); border:1px solid var(--border); border-radius:20px; padding:30px;">
+    <h2 style="color:var(--primary); margin-bottom:20px;">📁 Enviar relatório de devedores</h2>
+    <p style="color:var(--muted); margin-bottom:20px;">Envie o arquivo .xlsx ou .csv com os devedores para atualizar seu painel</p>
+    <input type="file" id="fileUpload" accept=".xlsx,.csv"/>
+    <br>
+    <button id="uploadBtn" class="btn">Enviar Relatório</button>
+    <p id="uploadStatus" style="margin-top:15px; color:var(--secondary); font-weight:bold;"></p>
+  </div>
+</section>
+
+<script>
+  const uploadBtn = document.getElementById('uploadBtn');
+  const fileUpload = document.getElementById('fileUpload');
+  const uploadStatus = document.getElementById('uploadStatus');
+
+  uploadBtn.addEventListener('click', () => {
+    if(fileUpload.files.length === 0){
+      uploadStatus.style.color = 'var(--danger)';
+      uploadStatus.textContent = '❌ Nenhum arquivo selecionado!';
+      return;
+    }
+    const file = fileUpload.files[0];
+    uploadStatus.style.color = 'var(--secondary)';
+    uploadStatus.textContent = `✔ Arquivo "${file.name}" enviado com sucesso!`;
+    fileUpload.value = "";
+  });
+</script>
 
 <!-- Clientes / ranking -->
 <h2 class="section-title">Clientes e negociações</h2>
