@@ -131,6 +131,29 @@
       color: white;
     }
 
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .back-btn:hover {
+      background: rgba(91, 126, 255, 0.1);
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateX(-4px);
+    }
+
     .status-indicator {
       display: flex;
       align-items: center;
@@ -570,7 +593,10 @@
 <header>
   <h1>Painel CDL <span>• Recuperação com IA</span></h1>
   <div class="header-right">
-
+    <a href="/" class="back-btn">
+      <span>←</span>
+      <span>Voltar</span>
+    </a>
     <div class="status-indicator">
       <div class="status-dot"></div>
       <span>Sistema Ativo</span>
