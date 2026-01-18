@@ -1,32 +1,143 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Painel CDL • Recuperação com IA</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Painel CDL • Recuperação com IA</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <style>
-    /* ====== TODO O CSS ORIGINAL (SEM ALTERAÇÃO) ====== */
-    /* (mantido exatamente igual ao que você enviou) */
-    /* … */
-  </style>
+<style>
+* {
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #0b0f1a;
+  color: #eaeaf0;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 40px;
+  background: linear-gradient(135deg, #111827, #020617);
+  border-bottom: 1px solid #1f2937;
+}
+
+header h1 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+header h1 span {
+  color: #38bdf8;
+  font-weight: 500;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #38bdf8;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.back-btn:hover {
+  text-decoration: underline;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  background: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #22c55e;
+}
+
+.container {
+  padding: 32px 40px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: #020617;
+  border: 1px solid #1f2937;
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.4);
+}
+
+.card h3 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #9ca3af;
+  margin-bottom: 10px;
+}
+
+.card .value {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.card .subtext {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.success .value { color: #22c55e; }
+.warning .value { color: #facc15; }
+.primary .value { color: #38bdf8; }
+
+.section {
+  margin-top: 40px;
+}
+
+.section h2 {
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.chart-box {
+  background: #020617;
+  border: 1px solid #1f2937;
+  border-radius: 14px;
+  padding: 20px;
+}
+</style>
 </head>
 
 <body>
 
 <header>
   <h1>Painel CDL <span>• Recuperação com IA</span></h1>
+
   <div class="header-right">
-
-    <!-- ✅ BOTÃO VOLTAR CORRIGIDO -->
-    <a href="index.html" class="back-btn">
-      <span>←</span>
-      <span>Voltar</span>
-    </a>
-
+    <a href="index.html" class="back-btn">← Voltar</a>
     <div class="status-indicator">
       <div class="status-dot"></div>
       <span>Sistema Ativo</span>
@@ -36,30 +147,29 @@
 
 <div class="container">
 
-  <!-- KPIs PRINCIPAIS -->
   <div class="grid">
     <div class="card success">
       <h3>Total Recuperado</h3>
       <div class="value">R$ 2.847.500</div>
-      <div class="subtext">+18% vs. mês anterior</div>
+      <div class="subtext">+18% vs mês anterior</div>
     </div>
 
     <div class="card warning">
       <h3>Em Negociação</h3>
       <div class="value">R$ 856.300</div>
-      <div class="subtext">342 casos em andamento</div>
+      <div class="subtext">342 casos ativos</div>
     </div>
 
     <div class="card primary">
       <h3>Casos Ativos</h3>
       <div class="value">4.287</div>
-      <div class="subtext">Processados pelo Agente</div>
+      <div class="subtext">Processados pelo agente</div>
     </div>
 
     <div class="card success">
       <h3>Taxa de Recuperação</h3>
       <div class="value">71%</div>
-      <div class="subtext">Acima da meta de 68%</div>
+      <div class="subtext">Meta: 68%</div>
     </div>
 
     <div class="card primary">
@@ -69,13 +179,35 @@
     </div>
   </div>
 
-  <!-- RESTANTE DO HTML E JS -->
-  <!-- (sem nenhuma outra modificação) -->
+  <div class="section">
+    <h2>Evolução de Recuperação</h2>
+    <div class="chart-box">
+      <canvas id="recChart"></canvas>
+    </div>
+  </div>
 
 </div>
 
 <script>
-  /* ====== TODO O JS ORIGINAL (SEM ALTERAÇÃO) ====== */
+const ctx = document.getElementById("recChart");
+
+new Chart(ctx, {
+  type: "line",
+  data: {
+    labels: ["Ago","Set","Out","Nov","Dez","Jan"],
+    datasets: [{
+      label: "Valores Recuperados (R$)",
+      data: [120000, 180000, 260000, 420000, 610000, 850000],
+      borderWidth: 2,
+      tension: 0.4
+    }]
+  },
+  options: {
+    plugins: {
+      legend: { display: false }
+    }
+  }
+});
 </script>
 
 </body>
