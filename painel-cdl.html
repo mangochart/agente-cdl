@@ -1,232 +1,227 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Painel CDL • Recuperação com IA</title>
+<meta charset="UTF-8">
+<title>Painel CDL • Recuperação com IA</title>
 
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
-    }
+<style>
+body {
+  margin:0;
+  font-family: Arial, Helvetica, sans-serif;
+  background:#0f172a;
+  color:#e5e7eb;
+}
+.container {
+  max-width:1300px;
+  margin:auto;
+  padding:24px;
+}
+a { color:#94a3b8; text-decoration:none; }
 
-    a {
-      color: #94a3b8;
-      text-decoration: none;
-    }
+.header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+.header h1 { margin:6px 0; }
+.badge {
+  font-size:11px;
+  background:#1e293b;
+  padding:4px 8px;
+  border-radius:6px;
+}
 
-    .container {
-      padding: 24px;
-      max-width: 1200px;
-      margin: auto;
-    }
+.period-btn {
+  background:#2563eb;
+  color:#fff;
+  border:none;
+  padding:8px 14px;
+  border-radius:6px;
+  font-weight:bold;
+}
 
-    /* HEADER */
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
+.stats {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;
+  margin:24px 0;
+}
+.card {
+  background:#020617;
+  border:1px solid #1e293b;
+  border-radius:12px;
+  padding:16px;
+}
+.stat-title { font-size:13px; color:#94a3b8; }
+.stat-value { font-size:22px; font-weight:bold; margin-top:4px; }
+.stat-sub { font-size:12px; color:#22c55e; margin-top:4px; }
 
-    .header-left h1 {
-      margin: 8px 0 4px;
-      font-size: 26px;
-    }
+.grid-2 {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:20px;
+  margin-top:20px;
+}
 
-    .beta {
-      font-size: 12px;
-      background: #1e293b;
-      padding: 4px 8px;
-      border-radius: 6px;
-      margin-left: 8px;
-    }
+.table {
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+}
+.table th, .table td {
+  padding:8px;
+  border-bottom:1px solid #1e293b;
+  text-align:left;
+}
+.table th { color:#94a3b8; font-size:12px; }
 
-    /* PERIOD */
-    .period-selector {
-      margin-bottom: 24px;
-    }
+.dev {
+  font-size:12px;
+  color:#facc15;
+  margin-top:8px;
+}
 
-    .period-btn {
-      background: #2563eb;
-      color: #fff;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: default;
-    }
-
-    /* STATS */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-
-    .stat-card {
-      background: #020617;
-      border: 1px solid #1e293b;
-      border-radius: 10px;
-      padding: 16px;
-    }
-
-    .stat-title {
-      font-size: 13px;
-      color: #94a3b8;
-      margin-bottom: 6px;
-    }
-
-    .stat-value {
-      font-size: 22px;
-      font-weight: bold;
-    }
-
-    .stat-sub {
-      font-size: 12px;
-      color: #22c55e;
-      margin-top: 4px;
-    }
-
-    /* GRID */
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: #020617;
-      border: 1px solid #1e293b;
-      border-radius: 12px;
-      padding: 16px;
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .card-title {
-      font-weight: bold;
-    }
-
-    .chart-container {
-      height: 260px;
-    }
-  </style>
+button.action {
+  background:#1e293b;
+  color:#facc15;
+  border:1px dashed #facc15;
+  padding:8px 10px;
+  border-radius:6px;
+  cursor:not-allowed;
+  font-size:13px;
+}
+</style>
 </head>
 
 <body>
-  <div class="container">
+<div class="container">
 
-    <!-- HEADER -->
-    <div class="header">
-      <div class="header-left">
-        <a href="index.html">← Voltar</a>
-        <h1>Painel CDL <span class="beta">IA</span></h1>
-      </div>
-      <div>Status: <strong style="color:#22c55e;">Sistema Ativo</strong></div>
-    </div>
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <a href="index.html">← Voltar</a>
+    <h1>Painel CDL <span class="badge">IA</span></h1>
+  </div>
+  <div>Status: <strong style="color:#22c55e;">Ativo</strong></div>
+</div>
 
-    <!-- PERIOD -->
-    <div class="period-selector">
-      <button class="period-btn">Últimos 90 dias</button>
-    </div>
+<button class="period-btn">Últimos 90 dias</button>
 
-    <!-- STATS -->
-    <div class="stats">
-      <div class="stat-card">
-        <div class="stat-title">Total Recuperado</div>
-        <div class="stat-value">R$ 2.847.500</div>
-        <div class="stat-sub">+18% vs mês anterior</div>
-      </div>
+<!-- KPIs -->
+<div class="stats">
+  <div class="card">
+    <div class="stat-title">Total Recuperado</div>
+    <div class="stat-value">R$ 2.847.500</div>
+    <div class="stat-sub">+18% mês anterior</div>
+  </div>
+  <div class="card">
+    <div class="stat-title">Em Negociação</div>
+    <div class="stat-value">R$ 856.300</div>
+    <div class="stat-sub">342 casos</div>
+  </div>
+  <div class="card">
+    <div class="stat-title">Casos Ativos</div>
+    <div class="stat-value">4.287</div>
+    <div class="stat-sub">Processados pelo agente</div>
+  </div>
+  <div class="card">
+    <div class="stat-title">Taxa de Recuperação</div>
+    <div class="stat-value">71%</div>
+    <div class="stat-sub">Meta 68%</div>
+  </div>
+  <div class="card">
+    <div class="stat-title">Tempo Médio de Recuperação</div>
+    <div class="stat-value">19 dias</div>
+    <div class="stat-sub">Antes: 31 dias</div>
+  </div>
+</div>
 
-      <div class="stat-card">
-        <div class="stat-title">Em Negociação</div>
-        <div class="stat-value">R$ 856.300</div>
-        <div class="stat-sub">342 casos em andamento</div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-title">Casos Ativos</div>
-        <div class="stat-value">4.287</div>
-        <div class="stat-sub">Processados pelo agente</div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-title">Taxa de Recuperação</div>
-        <div class="stat-value">71%</div>
-        <div class="stat-sub">Meta: 68%</div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-title">Lojistas Ativos</div>
-        <div class="stat-value">287</div>
-        <div class="stat-sub">Usando a plataforma</div>
-      </div>
-    </div>
-
-    <!-- GRÁFICOS -->
-    <div class="grid-2">
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">Evolução da Recuperação</div>
-        </div>
-        <div class="chart-container">
-          <canvas id="chartRecuperacao"></canvas>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">Status dos Casos</div>
-        </div>
-        <div class="chart-container">
-          <canvas id="chartCasos"></canvas>
-        </div>
-      </div>
-
-    </div>
+<!-- GRÁFICOS -->
+<div class="grid-2">
+  <div class="card">
+    <h3>Evolução da Recuperação</h3>
+    <canvas id="rec"></canvas>
   </div>
 
-  <!-- SCRIPTS -->
-  <script>
-    new Chart(document.getElementById('chartRecuperacao'), {
-      type: 'line',
-      data: {
-        labels: ['Jan','Fev','Mar','Abr','Mai','Jun'],
-        datasets: [{
-          label: 'Valor Recuperado (R$)',
-          data: [320000, 410000, 380000, 520000, 610000, 700000],
-          borderWidth: 2,
-          tension: 0.4
-        }]
-      },
-      options: { responsive: true }
-    });
+  <div class="card">
+    <h3>Status dos Casos</h3>
+    <canvas id="casos"></canvas>
+  </div>
+</div>
 
-    new Chart(document.getElementById('chartCasos'), {
-      type: 'doughnut',
-      data: {
-        labels: ['Recuperados','Em Negociação','Inadimplentes'],
-        datasets: [{
-          data: [62, 21, 17]
-        }]
-      },
-      options: { responsive: true }
-    });
-  </script>
+<!-- RANKING -->
+<div class="card" style="margin-top:24px;">
+<h3>Ranking de Lojistas</h3>
+<table class="table">
+<tr><th>#</th><th>Lojista</th><th>Recuperado</th></tr>
+<tr><td>1</td><td>Farmácia Central</td><td>R$ 182.000</td></tr>
+<tr><td>2</td><td>Super Popular</td><td>R$ 149.300</td></tr>
+<tr><td>3</td><td>Ótica Visão+</td><td>R$ 121.900</td></tr>
+<tr><td>4</td><td>Magazine Sul</td><td>R$ 98.400</td></tr>
+<tr><td>5</td><td>Auto Peças Real</td><td>R$ 87.200</td></tr>
+</table>
+</div>
+
+<!-- INSIGHTS -->
+<div class="grid-2">
+
+<div class="card">
+<h3>Top Motivos de Inadimplência</h3>
+<ul>
+  <li>Desemprego / Renda instável</li>
+  <li>Esquecimento</li>
+  <li>Problemas de saúde</li>
+  <li>Desorganização financeira</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Cases Rápidos</h3>
+<p><strong>R$ 52.000</strong> recuperados em <strong>11 dias</strong> (Setor varejo)</p>
+<p><strong>R$ 37.400</strong> recuperados em <strong>8 dias</strong> (Serviços)</p>
+<p><strong>R$ 91.200</strong> recuperados em <strong>21 dias</strong> (Autopeças)</p>
+</div>
+
+</div>
+
+<!-- AÇÕES -->
+<div class="grid-2" style="margin-top:24px;">
+
+<div class="card">
+<h3>Agente de Cobrança IA</h3>
+<button class="action">🚧 Abrir demo do agente</button>
+<div class="dev">Em desenvolvimento</div>
+</div>
+
+<div class="card">
+<h3>Relatórios Executivos</h3>
+<button class="action">🚧 Exportar PDF</button>
+<div class="dev">Em desenvolvimento</div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+new Chart(rec, {
+  type:'line',
+  data:{
+    labels:['Jan','Fev','Mar','Abr','Mai','Jun'],
+    datasets:[{label:'R$',data:[320,410,380,520,610,700],borderWidth:2,tension:.4}]
+  }
+});
+new Chart(casos, {
+  type:'doughnut',
+  data:{
+    labels:['Recuperados','Negociação','Inadimplentes'],
+    datasets:[{data:[62,21,17]}]
+  }
+});
+</script>
 
 </body>
 </html>
