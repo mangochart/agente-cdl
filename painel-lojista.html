@@ -1,962 +1,192 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Painel do Lojista | Agente CDL</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    :root {
-      --bg: #020617;
-      --bg-secondary: #0a0f1e;
-      --card: #0f172a;
-      --border: #1e293b;
-      --primary: #38bdf8;
-      --primary-dark: #0284c7;
-      --secondary: #22c55e;
-      --danger: #ef4444;
-      --alert: #facc15;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --gradient-1: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
-      --gradient-2: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-      --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-      --gradient-alert: linear-gradient(135deg, #facc15 0%, #eab308 100%);
-    }
+<meta charset="UTF-8">
+<title>Painel do Lojista • Agente CDL</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
+<style>
+:root{
+--bg:#020617;--card:#0f172a;--border:#1e293b;
+--primary:#38bdf8;--success:#22c55e;--alert:#facc15;--danger:#ef4444;
+--text:#f8fafc;--muted:#94a3b8;
+--g1:linear-gradient(135deg,#38bdf8,#0284c7);
+--g2:linear-gradient(135deg,#22c55e,#16a34a);
+--ga:linear-gradient(135deg,#facc15,#eab308);
+}
 
-    /* HEADER */
-    header {
-      padding: 32px 40px;
-      border-bottom: 1px solid var(--border);
-      background: var(--card);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(20px);
-    }
-    
-    .header-content {
-      max-width: 1400px;
-      margin: auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-    
-    .header-info h1 {
-      background: var(--gradient-1);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-size: 32px;
-      font-weight: 900;
-      margin-bottom: 8px;
-      letter-spacing: -0.5px;
-    }
-    
-    .header-info p {
-      color: var(--muted);
-      font-size: 15px;
-    }
-    
-    .header-info .store-name {
-      font-weight: 600;
-      color: var(--text);
-    }
-    
-    .header-actions {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    
-    .back-btn {
-      padding: 10px 20px;
-      background: rgba(148,163,184,0.1);
-      border: 1px solid rgba(148,163,184,0.3);
-      color: var(--muted);
-      border-radius: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-      font-size: 14px;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .back-btn:hover {
-      background: rgba(148,163,184,0.2);
-      border-color: var(--muted);
-      color: var(--text);
-    }
-    
-    .upload-btn {
-      padding: 12px 24px;
-      background: var(--gradient-2);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s;
-      font-size: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .upload-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(34,197,94,0.3);
-    }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui;background:var(--bg);color:var(--text)}
 
-    main {
-      max-width: 1400px;
-      margin: auto;
-      padding: 40px 40px 80px;
-    }
+.container{max-width:1400px;margin:auto;padding:32px}
 
-    /* HERO STATS */
-    .hero-stats {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 40px;
-      margin-bottom: 40px;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .hero-stats::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: var(--gradient-2);
-    }
-    
-    .hero-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 40px;
-      flex-wrap: wrap;
-    }
-    
-    .hero-main {
-      flex: 1;
-      min-width: 300px;
-    }
-    
-    .hero-label {
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 12px;
-    }
-    
-    .hero-value {
-      font-size: 64px;
-      font-weight: 900;
-      background: var(--gradient-2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1;
-      margin-bottom: 12px;
-    }
-    
-    .hero-change {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--secondary);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    
-    .hero-mini-stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 24px;
-      flex: 1;
-    }
-    
-    .mini-stat {
-      text-align: center;
-      padding: 20px;
-      background: var(--bg);
-      border-radius: 16px;
-    }
-    
-    .mini-stat-value {
-      font-size: 32px;
-      font-weight: 900;
-      color: var(--text);
-      margin-bottom: 4px;
-    }
-    
-    .mini-stat-label {
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 600;
-    }
+header{
+background:var(--card);border-bottom:1px solid var(--border);
+position:sticky;top:0;z-index:10
+}
+.header{
+display:flex;justify-content:space-between;align-items:center;
+padding:24px 32px;flex-wrap:wrap;gap:20px
+}
+h1{font-size:30px;font-weight:900;background:var(--g1);
+-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
-    /* KPIs GRID */
-    .kpis {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-      margin-bottom: 48px;
-    }
-    
-    .kpi {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 28px;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }
-    
-    .kpi::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--gradient-1);
-      transform: scaleX(0);
-      transition: transform 0.3s ease;
-    }
-    
-    .kpi.success::before { background: var(--gradient-2); }
-    .kpi.alert::before { background: var(--gradient-alert); }
-    
-    .kpi:hover {
-      transform: translateY(-4px);
-      border-color: rgba(56,189,248,0.4);
-      box-shadow: 0 12px 40px rgba(56,189,248,0.12);
-    }
-    
-    .kpi:hover::before {
-      transform: scaleX(1);
-    }
-    
-    .kpi-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 16px;
-    }
-    
-    .kpi-icon {
-      width: 48px;
-      height: 48px;
-      background: rgba(56,189,248,0.1);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-    }
-    
-    .kpi.success .kpi-icon { background: rgba(34,197,94,0.1); }
-    .kpi.alert .kpi-icon { background: rgba(250,204,21,0.1); }
-    
-    .kpi-change {
-      font-size: 13px;
-      font-weight: 700;
-      padding: 6px 12px;
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    
-    .kpi-change.up {
-      background: rgba(34,197,94,0.15);
-      color: var(--secondary);
-    }
-    
-    .kpi-change.down {
-      background: rgba(239,68,68,0.15);
-      color: var(--danger);
-    }
-    
-    .kpi-value {
-      font-size: 36px;
-      font-weight: 900;
-      background: var(--gradient-1);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-    
-    .kpi.success .kpi-value {
-      background: var(--gradient-2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    
-    .kpi.alert .kpi-value {
-      background: var(--gradient-alert);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    
-    .kpi-label {
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 500;
-    }
+.btn{
+padding:10px 18px;border-radius:12px;font-weight:700;
+border:1px solid rgba(56,189,248,.3);
+background:rgba(56,189,248,.1);color:var(--primary);
+cursor:pointer
+}
+.btn.primary{background:var(--g2);color:#fff;border:none}
+.btn.dev{
+border:1px dashed var(--alert);
+color:var(--alert);cursor:not-allowed
+}
 
-    /* CHARTS */
-    .charts-section {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 24px;
-      margin-bottom: 48px;
-    }
-    
-    .chart-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 32px;
-      transition: all 0.3s;
-    }
-    
-    .chart-card:hover {
-      border-color: rgba(56,189,248,0.3);
-    }
-    
-    .chart-title {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 24px;
-    }
+.card{
+background:var(--card);border:1px solid var(--border);
+border-radius:20px;padding:24px;margin-bottom:24px
+}
 
-    /* BAR CHART */
-    .bar-chart {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 20px;
-      height: 220px;
-      padding-top: 40px;
-      position: relative;
-    }
-    
-    .bar-wrapper {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      height: 100%;
-      justify-content: flex-end;
-    }
-    
-    .bar {
-      width: 100%;
-      min-height: 20px;
-      border-radius: 12px 12px 0 0;
-      position: relative;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    
-    .bar:hover {
-      filter: brightness(1.2);
-      transform: scaleY(1.05);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    }
-    
-    .bar-value {
-      position: absolute;
-      top: -28px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text);
-      white-space: nowrap;
-    }
-    
-    .bar-label {
-      font-size: 13px;
-      color: var(--muted);
-      font-weight: 600;
-      margin-top: 8px;
-    }
+.grid-2{display:grid;grid-template-columns:2fr 1fr;gap:24px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
 
-    /* STATUS STATS */
-    .status-stats {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    
-    .status-item {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 20px;
-      background: var(--bg);
-      border-radius: 16px;
-      transition: all 0.3s;
-    }
-    
-    .status-item:hover {
-      background: rgba(56,189,248,0.05);
-      transform: translateX(4px);
-    }
-    
-    .status-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      flex-shrink: 0;
-    }
-    
-    .status-icon.success { background: rgba(34,197,94,0.15); }
-    .status-icon.info { background: rgba(56,189,248,0.15); }
-    .status-icon.danger { background: rgba(239,68,68,0.15); }
-    
-    .status-content {
-      flex: 1;
-    }
-    
-    .status-percent {
-      font-size: 28px;
-      font-weight: 900;
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-    
-    .status-percent.success { color: var(--secondary); }
-    .status-percent.info { color: var(--primary); }
-    .status-percent.danger { color: var(--danger); }
-    
-    .status-label {
-      font-size: 13px;
-      color: var(--muted);
-      font-weight: 500;
-    }
+.big-number{
+font-size:56px;font-weight:900;background:var(--g2);
+-webkit-background-clip:text;-webkit-text-fill-color:transparent
+}
 
-    /* UPLOAD SECTION */
-    .upload-section {
-      background: var(--card);
-      border: 2px dashed var(--border);
-      border-radius: 24px;
-      padding: 48px;
-      text-align: center;
-      margin-bottom: 48px;
-      transition: all 0.3s;
-    }
-    
-    .upload-section:hover {
-      border-color: rgba(56,189,248,0.5);
-      background: rgba(56,189,248,0.02);
-    }
-    
-    .upload-icon {
-      font-size: 64px;
-      margin-bottom: 24px;
-      opacity: 0.8;
-    }
-    
-    .upload-title {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 12px;
-    }
-    
-    .upload-description {
-      color: var(--muted);
-      font-size: 15px;
-      margin-bottom: 32px;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    
-    .upload-actions {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    
-    .file-input-wrapper {
-      position: relative;
-      overflow: hidden;
-      display: inline-block;
-    }
-    
-    .file-input-wrapper input[type=file] {
-      position: absolute;
-      left: -9999px;
-    }
-    
-    .file-input-label {
-      padding: 14px 28px;
-      background: rgba(56,189,248,0.1);
-      border: 1px solid rgba(56,189,248,0.3);
-      color: var(--primary);
-      border-radius: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-      font-size: 15px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .file-input-label:hover {
-      background: rgba(56,189,248,0.2);
-      border-color: var(--primary);
-    }
-    
-    .file-name {
-      color: var(--muted);
-      font-size: 14px;
-      margin-top: 16px;
-      font-weight: 500;
-    }
-    
-    .upload-status {
-      margin-top: 20px;
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 14px;
-      display: none;
-    }
-    
-    .upload-status.success {
-      background: rgba(34,197,94,0.15);
-      color: var(--secondary);
-      display: block;
-    }
-    
-    .upload-status.error {
-      background: rgba(239,68,68,0.15);
-      color: var(--danger);
-      display: block;
-    }
+.kpi{
+padding:20px;border-radius:16px;border:1px solid var(--border)
+}
+.kpi.success{border-left:4px solid var(--success)}
+.kpi.alert{border-left:4px solid var(--alert)}
 
-    /* TABLE */
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-    
-    .section-title {
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--text);
-    }
-    
-    .filter-buttons {
-      display: flex;
-      gap: 8px;
-    }
-    
-    .filter-btn {
-      padding: 8px 16px;
-      background: rgba(148,163,184,0.1);
-      border: 1px solid rgba(148,163,184,0.2);
-      color: var(--muted);
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    
-    .filter-btn.active {
-      background: var(--gradient-1);
-      border-color: var(--primary);
-      color: var(--bg);
-    }
-    
-    .filter-btn:hover {
-      background: rgba(148,163,184,0.2);
-    }
+.badge{
+display:inline-block;padding:6px 12px;border-radius:20px;
+font-size:12px;font-weight:700
+}
+.badge.success{background:rgba(34,197,94,.15);color:var(--success)}
+.badge.alert{background:rgba(250,204,21,.15);color:var(--alert)}
 
-    .table-container {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      overflow: hidden;
-      margin-bottom: 48px;
-    }
-    
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    
-    thead {
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-    }
-    
-    th {
-      padding: 20px 24px;
-      text-align: left;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    
-    td {
-      padding: 20px 24px;
-      border-bottom: 1px solid var(--border);
-      font-size: 14px;
-    }
-    
-    tbody tr {
-      transition: all 0.2s;
-    }
-    
-    tbody tr:hover {
-      background: rgba(56,189,248,0.05);
-    }
-    
-    tbody tr:last-child td {
-      border-bottom: none;
-    }
-    
-    .client-name {
-      font-weight: 600;
-      color: var(--text);
-    }
-    
-    .client-meta {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-    
-    .status-badge {
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      display: inline-block;
-    }
-    
-    .status-badge.active {
-      background: rgba(34,197,94,0.15);
-      color: var(--secondary);
-    }
-    
-    .status-badge.paused {
-      background: rgba(239,68,68,0.15);
-      color: var(--danger);
-    }
-    
-    .status-badge.stopped {
-      background: rgba(250,204,21,0.15);
-      color: var(--alert);
-    }
-    
-    .btn {
-      background: rgba(56,189,248,0.1);
-      border: 1px solid rgba(56,189,248,0.3);
-      color: var(--primary);
-      padding: 8px 16px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.3s;
-      text-decoration: none;
-      display: inline-block;
-    }
-    
-    .btn:hover {
-      background: rgba(56,189,248,0.2);
-      border-color: var(--primary);
-      transform: translateY(-1px);
-    }
+.table{width:100%;border-collapse:collapse;font-size:14px}
+.table th,.table td{padding:14px;border-bottom:1px solid var(--border)}
+.table th{color:var(--muted);text-align:left}
 
-    footer {
-      margin-top: 60px;
-      padding: 32px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 14px;
-      border-top: 1px solid var(--border);
-    }
+.timeline li{
+list-style:none;padding:12px 0;border-bottom:1px dashed var(--border)
+}
 
-    /* RESPONSIVE */
-    @media (max-width: 1200px) {
-      .charts-section {
-        grid-template-columns: 1fr;
-      }
-      
-      .hero-mini-stats {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    
-    @media (max-width: 768px) {
-      header {
-        padding: 24px 20px;
-      }
-      
-      main {
-        padding: 32px 20px;
-      }
-      
-      .header-content {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      
-      .hero-stats {
-        padding: 24px;
-      }
-      
-      .hero-value {
-        font-size: 48px;
-      }
-      
-      .kpis {
-        grid-template-columns: 1fr;
-      }
-      
-      .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-      }
-      
-      .filter-buttons {
-        width: 100%;
-        justify-content: space-between;
-      }
-      
-      table {
-        font-size: 12px;
-      }
-      
-      th, td {
-        padding: 12px 16px;
-      }
-      
-      .upload-section {
-        padding: 32px 24px;
-      }
-    }
+.notice{
+margin-top:10px;font-size:12px;color:var(--alert)
+}
 
-  </style>
+footer{
+text-align:center;color:var(--muted);padding:32px;
+border-top:1px solid var(--border)
+}
+</style>
 </head>
+
 <body>
 
 <header>
-  <div class="header-content">
-    <div class="header-info">
-      <h1>Painel do Lojista</h1>
-      <p>Recupere crédito de forma automática • <span class="store-name">Eletro Max</span></p>
-    </div>
-    <div class="header-actions">
-      <a href="index.html" class="back-btn">← Voltar ao início</a>
-      <button class="upload-btn" onclick="document.getElementById('scrollToUpload').scrollIntoView({behavior: 'smooth'})">
-        📤 Enviar planilha
-      </button>
-    </div>
-  </div>
+<div class="header">
+<div>
+<a href="index.html" style="color:var(--muted)">← Voltar</a>
+<h1>Painel do Lojista</h1>
+<p style="color:var(--muted)">Você está acima da média da CDL 🚀</p>
+</div>
+<button class="btn primary">📤 Enviar planilha</button>
+</div>
 </header>
 
-<main>
+<div class="container">
 
-  <!-- HERO STATS -->
-  <div class="hero-stats">
-    <div class="hero-content">
-      <div class="hero-main">
-        <div class="hero-label">Total Recuperado</div>
-        <div class="hero-value">R$ 98.900</div>
-        <div class="hero-change">
-          ↑ +15% vs mês anterior
-        </div>
-      </div>
-      <div class="hero-mini-stats">
-        <div class="mini-stat">
-          <div class="mini-stat-value">44</div>
-          <div class="mini-stat-label">Em andamento</div>
-        </div>
-        <div class="mini-stat">
-          <div class="mini-stat-value">29</div>
-          <div class="mini-stat-label">Fechadas</div>
-        </div>
-        <div class="mini-stat">
-          <div class="mini-stat-value">65%</div>
-          <div class="mini-stat-label">Taxa sucesso</div>
-        </div>
-      </div>
-    </div>
-  </div>
+<!-- HERO -->
+<div class="card grid-2">
+<div>
+<p style="color:var(--muted)">Total recuperado</p>
+<div class="big-number">R$ 98.900</div>
+<p class="badge success">+15% vs média da CDL</p>
+</div>
+<div class="grid-3">
+<div class="kpi success">
+<strong>65%</strong><br>Taxa de sucesso
+</div>
+<div class="kpi">
+<strong>12 dias</strong><br>Tempo médio
+</div>
+<div class="kpi alert">
+<strong>10</strong><br>Casos parados
+</div>
+</div>
+</div>
 
-  <!-- KPIs -->
-  <div class="kpis">
-    <div class="kpi success">
-      <div class="kpi-header">
-        <div class="kpi-icon">💰</div>
-        <div class="kpi-change up">↑ +22%</div>
-      </div>
-      <div class="kpi-value">R$ 32.450</div>
-      <div class="kpi-label">Recuperado este mês</div>
-    </div>
+<!-- AÇÃO DO DIA -->
+<div class="card">
+<h3>🎯 Próxima melhor ação (IA)</h3>
+<p>Priorize cobrança de <strong>3 clientes</strong> com alto valor e alta chance de acordo hoje.</p>
+<button class="btn dev">🚧 Ver lista priorizada</button>
+<div class="notice">Em desenvolvimento</div>
+</div>
 
-    <div class="kpi">
-      <div class="kpi-header">
-        <div class="kpi-icon">📊</div>
-        <div class="kpi-change up">↑ +8%</div>
-      </div>
-      <div class="kpi-value">R$ 18.200</div>
-      <div class="kpi-label">Ticket médio recuperado</div>
-    </div>
+<!-- COMPARATIVO -->
+<div class="card">
+<h3>📊 Comparativo com a CDL</h3>
+<p>Você está no <strong>Top 20%</strong> dos lojistas da sua região.</p>
+<span class="badge success">Selo de Performance</span>
+</div>
 
-    <div class="kpi">
-      <div class="kpi-header">
-        <div class="kpi-icon">⏱️</div>
-        <div class="kpi-change up">↓ -2 dias</div>
-      </div>
-      <div class="kpi-value">12 dias</div>
-      <div class="kpi-label">Tempo médio de acordo</div>
-    </div>
+<!-- SIMULADOR -->
+<div class="card">
+<h3>🧮 Simulador de Acordo</h3>
+<p>Se aceitar <strong>80%</strong> das dívidas em aberto:</p>
+<p><strong>R$ 41.200</strong> entram em até <strong>15 dias</strong></p>
+<button class="btn dev">🚧 Ajustar simulação</button>
+<div class="notice">Em desenvolvimento</div>
+</div>
 
-    <div class="kpi alert">
-      <div class="kpi-header">
-        <div class="kpi-icon">🎯</div>
-        <div class="kpi-change down">↓ -3%</div>
-      </div>
-      <div class="kpi-value">65%</div>
-      <div class="kpi-label">Taxa de conversão</div>
-    </div>
-  </div>
+<!-- TABELA -->
+<div class="card">
+<h3>📋 Top devedores por valor</h3>
+<table class="table">
+<tr><th>Cliente</th><th>Valor</th><th>Status</th></tr>
+<tr><td>João M.</td><td>R$ 8.200</td><td><span class="badge alert">Parado</span></td></tr>
+<tr><td>Ana R.</td><td>R$ 6.900</td><td><span class="badge success">Negociando</span></td></tr>
+<tr><td>Carlos P.</td><td>R$ 5.400</td><td><span class="badge success">Acordo</span></td></tr>
+</table>
+</div>
 
-  <!-- CHARTS -->
-  <div class="charts-section">
-    <div class="chart-card">
-      <h3 class="chart-title">Evolução de Recuperação (R$)</h3>
-      <div class="bar-chart">
-        <div class="bar-wrapper">
-          <div class="bar" style="height: 50%; background: linear-gradient(180deg, #22c55e, #16a34a);">
-            <span class="bar-value">R$ 18k</span>
-          </div>
-          <span class="bar-label">Jul</span>
-        </div>
-        <div class="bar-wrapper">
-          <div class="bar" style="height: 60%; background: linear-gradient(180deg, #22c55e, #16a34a);">
-            <span class="bar-value">R$ 21k</span>
-          </div>
-          <span class="bar-label">Ago</span>
-        </div>
-        <div class="bar-wrapper">
-          <div class="bar" style="height: 70%; background: linear-gradient(180deg, #22c55e, #16a34a);">
-            <span class="bar-value">R$ 25k</span>
-          </div>
-          <span class="bar-label">Set</span>
-        </div>
-        <div class="bar-wrapper">
-          <div class="bar" style="height: 85%; background: linear-gradient(180deg, #38bdf8, #0284c7);">
-            <span class="bar-value">R$ 29k</span>
-          </div>
-          <span class="bar-label">Out</span>
-        </div>
-        <div class="bar-wrapper">
-          <div class="bar" style="height: 100%; background: linear-gradient(180deg, #38bdf8, #0284c7);">
-            <span class="bar-value">R$ 32k</span>
-          </div>
-          <span class="bar-label">Nov</span>
-        </div>
-      </div>
-    </div>
+<!-- TIMELINE -->
+<div class="card">
+<h3>🕓 Linha do tempo do cliente (exemplo)</h3>
+<ul class="timeline">
+<li>📨 Mensagem enviada — 10/01</li>
+<li>💬 Cliente respondeu — 12/01</li>
+<li>🤝 Proposta aceita — 14/01</li>
+</ul>
+<button class="btn dev">🚧 Ver histórico completo</button>
+<div class="notice">Em desenvolvimento</div>
+</div>
 
-    <div class="chart-card">
-      <h3 class="chart-title">Status das Negociações</h3>
-      <div class="status-stats">
-        <div class="status-item">
-          <div class="status-icon success">✓</div>
-          <div class="status-content">
-            <div class="status-percent success">65%</div>
-            <div class="status-label">Acordos fechados</div>
-          </div>
-        </div>
-        <div class="status-item">
-          <div class="status-icon info">⏳</div>
-          <div class="status-content">
-            <div class="status-percent info">25%</div>
-            <div class="status-label">Em negociação</div>
-          </div>
-        </div>
-        <div class="status-item">
-          <div class="status-icon danger">✗</div>
-          <div class="status-content">
-            <div class="status-percent danger">10%</div>
-            <div class="status-label">Sem acordo</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<!-- TRANSPARÊNCIA -->
+<div class="card">
+<h3>🤖 O que o agente fez por você</h3>
+<ul>
+<li>• 182 mensagens enviadas</li>
+<li>• 44 negociações iniciadas</li>
+<li>• 29 acordos fechados</li>
+</ul>
+<button class="btn dev">🚧 Ver detalhes do agente</button>
+<div class="notice">Em desenvolvimento</div>
+</div>
 
-  <!-- UPLOAD SECTION -->
-  <div class="upload-section" id="scrollToUpload">
-    <div class="upload-icon">📁</div>
-    <h2 class="upload-title">Adicionar Novos Devedores</h2>
-    <p class="upload-description">
-      Envie sua planilha Excel (.xlsx) ou CSV com os dados dos devedores e deixe o Agente CDL trabalhar por você
-    </p>
-    <div class="upload-actions">
-      <div class="file-input-wrapper">
-        <input type="file" id="fileUpload" accept=".xlsx,.csv" onchange="updateFileName(this)">
-        <label for="fileUpload" class="file-input-label">
-          📎 Selecionar arquivo
-        </label>
-      </div>
-      <button class="upload-btn" onclick="uploadFile()">
+</div>
+
+<footer>
+Agente CDL • Recuperação inteligente de crédito
+</footer>
+
+</body>
+</html>
